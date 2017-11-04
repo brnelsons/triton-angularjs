@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+
+<html>
+<link>
+    <title>Home - Triton Server Manager</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+    <script src="/js/controller.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style/common.css">
+
+</head>
+<body>
+<div ng-app="app" ng-controller="controller">
+    <button id="btn-id" ng-click="getAllGames()">Refresh</button>
+    <div class="game-tile" ng-repeat="game in allGames">
+        <span ng-bind="game.name"></span>
+        <span ng-bind="game.status"></span>
+    </div>
+</div>
+</body>
+</html>
