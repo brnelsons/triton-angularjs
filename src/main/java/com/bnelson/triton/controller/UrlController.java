@@ -14,4 +14,14 @@ public class UrlController {
     public String homepage(){
         return "index";
     }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
+    @GetMapping("/addServer")
+    public String nav(){
+        return "login";
+    }
 }
