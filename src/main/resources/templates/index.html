@@ -4,8 +4,8 @@
 <title>Home - Triton Server Manager</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 <script src="/js/controller.js"></script>
 <script src="/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/bootstrap-3.3.7/css/bootstrap.min.css">
@@ -46,13 +46,13 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-4 well" ng-repeat="game in allGames">
-                <h4 ng-bind="game.name"></h4>
+                <h4 ng-bind="game.gameName"></h4>
                 <img ng-src="{{game.imageUrl}}" style="width: 100%;"/>
                 <div ng-repeat="command in game.commands">
                     <input type="button" ng-value="command.name"/>
                 </div>
                 <div class="row">
-                    <button href="/login">
+                    <button href="/config/{{game.gameName}}/{{game.serverName}}">
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                     </button>
                 </div>
