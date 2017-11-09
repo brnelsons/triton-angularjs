@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 
 <html>
-<link>
 <title>Home - Triton Server Manager</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -30,7 +29,7 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="addServer">Add Server</a></li>
+                <li><a href="add">Add</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -38,21 +37,24 @@
 <div ng-app="app" ng-controller="controller" class="container">
     <div style="height:60px;"></div>
 
-    <div class="well">
-        <div class="row">
+        <div class="row" style="margin:20px;">
             <a href="#" class="btn btn-info btn-lg" ng-click="getAllGames()">
                 <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>
         </div>
-    </div>
 
     <div class="container">
         <div class="row">
-            <div class="game-tile col-sm-3 well" ng-repeat="game in allGames">
-                <span ng-bind="game.name"></span>
+            <div class="col-sm-4 well" ng-repeat="game in allGames">
+                <h4 ng-bind="game.name"></h4>
                 <img ng-src="{{game.imageUrl}}" style="width: 100%;"/>
                 <div ng-repeat="command in game.commands">
                     <input type="button" ng-value="command.name"/>
+                </div>
+                <div class="row">
+                    <button href="/login">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </button>
                 </div>
             </div>
         </div>

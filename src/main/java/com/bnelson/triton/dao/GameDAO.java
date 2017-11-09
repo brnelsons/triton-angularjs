@@ -11,16 +11,21 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.List;
 
 @Component
 public class GameDAO {
     private static final Logger LOGGER = LoggerFactory.getLogger(GameDAO.class);
-    private static final String basePath = "/home/bnelson/Documents/";//TODO inject this directory
+    private static final String basePath = "C:/Users/brnel/Documents/";//TODO inject this directory
 
     public List<String> getAll(){
         //noinspection ConstantConditions
-        return Lists.newArrayList(new File(basePath).list((dir, name) -> name.endsWith(".yml")));
+        String[] list = new File(basePath).list((dir, name) -> name.endsWith(".yml"));
+        if(list == null){
+            return Lists.newArrayList();
+        }
+        return Lists.newArrayList(list);
     }
 
     public Game getGameByFileName(String filename) {
@@ -34,19 +39,28 @@ public class GameDAO {
         return null;
     }
 
-    public void saveGame(Game game){
+    public boolean saveGame(Game game){
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         String fileName = basePath + game.getGameName() + "_" + game.getServerName() + ".yml";
+        if(new File(fileName).exists()){
+            LOGGER.error("File {} already exists!", fileName);
+            return false;
+        }
         try{
             mapper.writeValue(new FileWriter(fileName), game);
+            return true;
         } catch (IOException e) {
             LOGGER.error("Was unable to write ", fileName, e);
         }
+        return false;
     }
 
     public static void main(String[] args) {
         GameDAO dao = new GameDAO();
-        System.out.println(dao.getAll());
+        Game game = new Game();
+        game.setGameName("7 Days to die");
+        game.setServerName("Server 1");
+        dao.saveGame(game);
     }
 
 }

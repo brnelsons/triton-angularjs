@@ -20,8 +20,8 @@ public class UrlController {
         return "login";
     }
 
-    @GetMapping("/addServer")
+    @GetMapping("/add")
     public String nav(){
-        return "login";
+        return "add";
     }
 }

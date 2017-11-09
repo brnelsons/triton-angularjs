@@ -24,6 +24,10 @@ public class GameBO {
         this.gameDAO = gameDAO;
     }
 
+    public boolean addGame(Game game){
+        return gameDAO.saveGame(game);
+    }
+
     public List<GameMetaData> getAllGameMetaData() {
         List<GameMetaData> metaData = new ArrayList<>();
         for (String s : gameDAO.getAll()) {
@@ -38,7 +42,9 @@ public class GameBO {
     private GameMetaData convertToMetaData(@Nonnull Game game) {
         GameMetaData gameMetaData = new GameMetaData();
         gameMetaData.setName(game.getGameName());
-        gameMetaData.setCommands(convertCommands(game.getCommands()));
+        if(game.getCommands() != null) {
+            gameMetaData.setCommands(convertCommands(game.getCommands()));
+        }
         gameMetaData.setImageUrl(game.getImageUrl());
         return gameMetaData;
     }
