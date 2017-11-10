@@ -1,4 +1,16 @@
-.game-tile{
-    height:200px;
-    width:200px;
+.game-tile {
+    margin: 5px;
+}
+
+.image-wrapper {
+    min-height: 200px;
+}
+
+.game-title{
+    font-family: "DejaVu Sans Mono", serif;
+    font-size: 1em;
+}
+
+.btn{
+    outline: none !important;
 }

@@ -36,31 +36,73 @@
 <div ng-app="app" ng-controller="controller" class="container">
     <div style="height:60px;"></div>
     <h1>Add Server</h1>
-    <form id="add-game-form" ng-submit="submitAddGame()">
-        <div class="form-group">
-            <label for="game-name">Game Name</label>
-            <input type="text" ng-model="gameName" class="form-control" id="game-name" placeholder="7 Days to Die"/>
-        </div>
-        <div class="form-group">
-            <label for="server-name">Server Name</label>
-            <input type="text" ng-model="serverName" class="form-control" id="server-name" placeholder="Server ABC"/>
-        </div>
-        <div class="form-group">
-            <label for="image-url">Image URL</label>
-            <input type="text" ng-model="imageUrl" class="form-control" id="image-url" placeholder="google.com/someimage.png"/>
-            <!--<br>OR<br>-->
-            <!--<input type="file" class="form-control" id="image-file"/>-->
-        </div>
-        <div class="form-group">
-            <label for="server-url">Server URL</label>
-            <input type="text" ng-model="serverUrl" class="form-control" id="server-url" placeholder="localhost"/>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-10">
-                <input type="submit" id="submit btn btn-default" value="Submit" />
+    <div class="well">
+        <form id="add-game-form" class="form-horizontal" ng-submit="submitAddGame()">
+            <div class="form-group">
+                <label for="game-name" class="col-sm-2">Game Name</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="gameName" class="form-control" id="game-name"
+                           placeholder="7 Days to Die"/>
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="form-group">
+                <label for="server-name" class="col-sm-2">Server Name</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="serverName" class="form-control" id="server-name"
+                           placeholder="Server ABC"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="image-url" class="col-sm-2">Image URL</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="imageUrl" class="form-control" id="image-url"
+                           placeholder="google.com/someimage.png"/>
+                </div>
+                <!--<br>OR<br>-->
+                <!--<input type="file" class="form-control" id="image-file"/>-->
+            </div>
+            <div class="form-group">
+                <label for="server-url" class="col-sm-2">Server URL</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="serverUrl" class="form-control" id="server-url"
+                           placeholder="localhost"/>
+                </div>
+            </div>
+            <br>
+            <h3>Server Commands</h3>
+            <div ng-repeat="command in commands" class="well">
+                <div class="form-group">
+                    <label for="command-name" class="col-sm-2">Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="command.name" class="form-control" id="command-name"
+                               placeholder="Start Server"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="command-type" class="col-sm-2">Type</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="command.type" class="form-control" id="command-type"
+                               placeholder="START,STOP,KILL,CUSTOM"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="command-exe" class="col-sm-2">exe</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="command.exe" class="form-control" id="command-exe"
+                               placeholder="/Users/username/.steamcmd/runnable.sh"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2">
+                    <input id="Add Command" value="Add Command" class="btn btn-info" ng-click="addCommand()"/>
+                </div>
+                <div class="col-sm-2 col-push-10">
+                    <input type="submit" id="submit" class="btn btn-success" style="float:right;" value="Save"/>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>
