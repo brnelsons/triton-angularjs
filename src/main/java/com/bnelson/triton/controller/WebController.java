@@ -1,6 +1,7 @@
 package com.bnelson.triton.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -12,23 +13,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class WebController {
 
     @GetMapping("/")
-    public String homepage(){
+    public String homepage(Model model){
+        model.addAttribute("classActiveHome", "active");
         return "index";
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String login(Model model){
+        model.addAttribute("classActiveLogin", "active");
         return "login";
     }
 
     @GetMapping("/add")
-    public String nav(){
+    public String nav(Model model){
+        model.addAttribute("classActiveAdd", "active");
         return "add";
     }
 
-    @GetMapping("/config/{gameName}/{serverName}")
-    public String nav(@PathVariable("gameName") String gameName,
-                      @PathVariable("serverName") String serverName){
-        return "config";
+    @GetMapping("/settings")
+    public String settings(Model model){
+        model.addAttribute("classActiveSettings", "active");
+        return "settings";
     }
 }

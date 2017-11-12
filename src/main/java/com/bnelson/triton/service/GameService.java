@@ -35,4 +35,10 @@ public class GameService {
     public ResponseEntity<Boolean> addGame(@RequestBody Game game){
         return ResponseEntity.ok(gameBO.addGame(game));
     }
+
+    @GetMapping("/config/{gameName}/{serverName}")
+    public String nav(@PathVariable("gameName") String gameName,
+                      @PathVariable("serverName") String serverName){
+        return "config";
+    }
 }
