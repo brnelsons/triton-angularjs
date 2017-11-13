@@ -1,9 +1,13 @@
 package com.bnelson.triton.controller;
 
+import com.bnelson.triton.business.GameBO;
+import com.bnelson.triton.pojo.Game;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by brnel on 11/3/2017.
@@ -11,6 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @Controller
 public class WebController {
+    private final GameBO gameBO;
+
+    @Autowired
+    public WebController(GameBO gameBO) {
+        this.gameBO = gameBO;
+    }
 
     @GetMapping("/")
     public String homepage(Model model){
@@ -24,15 +34,26 @@ public class WebController {
         return "login";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/create")
     public String nav(Model model){
-        model.addAttribute("classActiveAdd", "active");
-        return "add";
+        model.addAttribute("classActiveCreate", "active");
+        return "create";
     }
 
     @GetMapping("/settings")
     public String settings(Model model){
         model.addAttribute("classActiveSettings", "active");
         return "settings";
+    }
+
+    @GetMapping("/config/{gameName}/{serverName}")
+    public ModelAndView configGame(@PathVariable("gameName")String gameName,
+                                   @PathVariable("serverName")String serverName){
+        Game gameMetaData = gameBO.getGame(gameName, serverName);
+        ModelAndView modelAndView = new ModelAndView("/config");
+        modelAndView.addObject("game", gameMetaData);
+        modelAndView.addObject("gameName", gameName);
+        modelAndView.addObject("serverName", serverName);
+        return modelAndView;
     }
 }

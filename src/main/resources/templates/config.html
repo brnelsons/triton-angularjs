@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html ng-app="app" ng-controller="controller" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="includes/header :: body"></div>
+
+<body>
+
+<div th:replace="fragment/nav :: body"></div>
+<div class="container">
+    <div style="height:60px;"></div>
+    <h1 th:text="${game.gameName}"></h1>
+    <h1 th:text="${game.serverName}"></h1>
+</div>
+</body>
+</html>

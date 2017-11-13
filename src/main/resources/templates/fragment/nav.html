@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="app" ng-controller="controller" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="classActiveHome" type="String"*/-->
-<!--/*@thymesVar id="classActiveAdd" type="String"*/-->
+<!--/*@thymesVar id="classActiveCreate" type="String"*/-->
 <!--/*@thymesVar id="classActiveSettings" type="String"*/-->
 <body>
 <div th:fragment="body">
@@ -20,7 +20,7 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li th:class="${classActiveHome}"><a th:href="@{/}">Home</a></li>
-                    <li th:class="${classActiveAdd}"><a th:href="@{/add}">Create</a></li>
+                    <li th:class="${classActiveCreate}"><a th:href="@{/create}">Create</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li th:class="${classActiveSettings}"><a th:href="@{/settings}">Settings</a></li>

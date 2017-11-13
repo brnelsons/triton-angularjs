@@ -25,45 +25,22 @@ public class GameBO {
         this.gameDAO = gameDAO;
     }
 
-    public boolean addGame(Game game){
+    public boolean createGame(Game game){
         Preconditions.checkNotNull(game);
         Preconditions.checkNotNull(game.getGameName());
         Preconditions.checkNotNull(game.getServerName());
-        return gameDAO.saveGame(game);
+        return gameDAO.createGame(game);
     }
 
-    public List<GameMetaData> getAllGameMetaData() {
-        List<GameMetaData> metaData = new ArrayList<>();
-        for (String s : gameDAO.getAll()) {
-            Game game = gameDAO.getGameByFileName(s);
-            if (game != null) {
-                metaData.add(convertToMetaData(game));
-            }
-        }
-        return metaData;
+    public List<Game> getAllGames(){
+        return gameDAO.getAllGames();
     }
 
-    private GameMetaData convertToMetaData(@Nonnull Game game) {
-        GameMetaData gameMetaData = new GameMetaData();
-        gameMetaData.setName(game.getGameName());
-        if(game.getCommands() != null) {
-            gameMetaData.setCommands(convertCommands(game.getCommands()));
-        }
-        gameMetaData.setImageUrl(game.getImageUrl());
-        return gameMetaData;
+    public Game getGame(String gameName, String serverName) {
+        return gameDAO.getGameByName(gameName, serverName);
     }
 
-    private List<String> convertCommands(List<GameCommand> commands) {
-        return Lists.transform(commands, new Function<GameCommand, String>() {
-            @Nullable
-            @Override
-            public String apply(@Nullable GameCommand input) {
-                if (input == null) {
-                    return null;
-                }
-                return input.getName();
-            }
-        });
+    public void update(Game game) {
+        gameDAO.update(game);
     }
-
 }

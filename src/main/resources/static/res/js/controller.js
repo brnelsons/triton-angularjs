@@ -1,8 +1,9 @@
 var app = angular.module('app', []);
+const API_GAME_PATH = 'http://localhost:8080/api/v1/game/';
 app.controller('controller', function ($scope, $filter, $http, $location) {
 
     $scope.getAllGames = function () {
-        $http.get('http://localhost:8080/api/v1/game/')
+        $http.get(API_GAME_PATH)
             .then(function (response) {
                 $scope.allGames = response.data;
             });
@@ -25,7 +26,7 @@ app.controller('controller', function ($scope, $filter, $http, $location) {
             serverUrl: $scope.serverUrl,
             commands: $scope.commands
         };
-        $http.post('http://localhost:8080/api/v1/game/add/', data)
+        $http.post(API_GAME_PATH + 'create/', data)
             .then(
                 function () {
                     $location.path('/')
@@ -34,5 +35,12 @@ app.controller('controller', function ($scope, $filter, $http, $location) {
                     console.log("ERROR")
                 }
             );
-    }
+    };
+
+    $scope.getGame = function(gameName, serverName){
+        $http.get(API_GAME_PATH + '/' + gameName + '/' + serverName)
+            .then(function(response){
+                $scope.game = response.data;
+            });
+    };
 });

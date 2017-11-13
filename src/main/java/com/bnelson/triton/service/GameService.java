@@ -3,13 +3,9 @@ package com.bnelson.triton.service;
 import com.bnelson.triton.business.GameBO;
 import com.bnelson.triton.pojo.Game;
 import com.bnelson.triton.pojo.GameMetaData;
-import com.sun.xml.internal.ws.client.sei.ResponseBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.xml.ws.Response;
-import java.util.ArrayList;
 
 /**
  * Created by brnel on 11/3/2017.
@@ -27,18 +23,26 @@ public class GameService {
     }
 
     @GetMapping("/")
-    public Iterable<GameMetaData> getAll(){
-        return gameBO.getAllGameMetaData();
+    public Iterable<Game> getAll() {
+        return gameBO.getAllGames();
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Boolean> addGame(@RequestBody Game game){
-        return ResponseEntity.ok(gameBO.addGame(game));
+    @PostMapping("/create")
+    public ResponseEntity<Boolean> createGame(@RequestBody Game game) {
+        return ResponseEntity.ok(gameBO.createGame(game));
     }
 
     @GetMapping("/config/{gameName}/{serverName}")
-    public String nav(@PathVariable("gameName") String gameName,
-                      @PathVariable("serverName") String serverName){
-        return "config";
+    public Game getGame(@PathVariable("gameName") String gameName,
+                        @PathVariable("serverName") String serverName) {
+        return gameBO.getGame(gameName, serverName);
+    }
+
+    @PutMapping("/config/{gameName}/{serverName}")
+    public void updateGame(@PathVariable("gameName") String gameName,
+                           @PathVariable("serverName") String serverName,
+                           @RequestBody() Game game) {
+//        return ResponseEntity.ok();
+        gameBO.update(game);
     }
 }
