@@ -24,24 +24,28 @@ public class WebController {
 
     @GetMapping("/")
     public String homepage(Model model){
+        model.addAttribute("title", "Home");
         model.addAttribute("classActiveHome", "active");
         return "index";
     }
 
     @GetMapping("/login")
     public String login(Model model){
+        model.addAttribute("title", "Login");
         model.addAttribute("classActiveLogin", "active");
         return "login";
     }
 
     @GetMapping("/create")
     public String nav(Model model){
+        model.addAttribute("title", "Create Server");
         model.addAttribute("classActiveCreate", "active");
         return "create";
     }
 
     @GetMapping("/settings")
     public String settings(Model model){
+        model.addAttribute("title", "Settings");
         model.addAttribute("classActiveSettings", "active");
         return "settings";
     }

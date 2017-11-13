@@ -14,3 +14,7 @@
 .btn{
     outline: none !important;
 }
+
+.invalid-form{
+    color: red;
+}
