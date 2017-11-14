@@ -13,7 +13,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private static final boolean SECURE = true;
+    private static final boolean SECURE = false;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

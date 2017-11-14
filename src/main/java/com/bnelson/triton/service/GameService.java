@@ -30,18 +30,14 @@ public class GameService {
     public ResponseEntity<Boolean> createGame(@RequestBody Game game) {
         return ResponseEntity.ok(gameBO.createGame(game));
     }
+    @PostMapping("/update")
+    public ResponseEntity<Boolean> updateGame(@RequestBody Game game) {
+        return ResponseEntity.ok(gameBO.update(game));
+    }
 
-    @GetMapping("/config/{gameName}/{serverName}")
+    @GetMapping("/{gameName}/{serverName}/")
     public Game getGame(@PathVariable("gameName") String gameName,
                         @PathVariable("serverName") String serverName) {
         return gameBO.getGame(gameName, serverName);
-    }
-
-    @PutMapping("/config/{gameName}/{serverName}")
-    public void updateGame(@PathVariable("gameName") String gameName,
-                           @PathVariable("serverName") String serverName,
-                           @RequestBody() Game game) {
-//        return ResponseEntity.ok();
-        gameBO.update(game);
     }
 }

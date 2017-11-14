@@ -40,7 +40,7 @@ public class GameBO {
         return gameDAO.getGameByName(gameName, serverName);
     }
 
-    public void update(Game game) {
-        gameDAO.update(game);
+    public boolean update(Game game) {
+        return gameDAO.update(game);
     }
 }

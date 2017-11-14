@@ -14,18 +14,17 @@ app.controller('controller', function ($scope, $filter, $http, $location) {
         $scope.commands.push({name: '', type: '', exe: ''})
     };
     $scope.addCommand();
-    // $scope.removeCommand = function(command){
-    //     $scope.commands.
-    // };
 
-    $scope.submitAddGame = function () {
-        var data = {
-            gameName: $scope.gameName,
-            imageUrl: $scope.imageUrl,
-            serverName: $scope.serverName,
-            serverUrl: $scope.serverUrl
-        };
-        $http.post(API_GAME_PATH + 'create/', data)
+    $scope.removeCommand = function(cmd){
+        var index = $scope.commands.indexOf(cmd);
+        $scope.commands.splice(index, 1);
+    };
+
+    function pushGame(endpoint) {
+        if($scope.commands !== []){
+            $scope.game.commands = $scope.commands;
+        }
+        $http.post(API_GAME_PATH + endpoint +'/', $scope.game)
             .then(
                 function () {
                     $scope.alert = {type: 'SUCCESS', strong: "SUCCESS", text: 'Successfully added server!'};
@@ -34,10 +33,18 @@ app.controller('controller', function ($scope, $filter, $http, $location) {
                     $scope.alert = {type: 'DANGER', strong: "ERROR", text: 'Error adding server! Please contact your system admin!'};
                 }
             );
+    }
+
+    $scope.submitAddGame = function () {
+        pushGame('create')
+    };
+
+    $scope.updateGame = function () {
+        pushGame('update')
     };
 
     $scope.getGame = function(gameName, serverName){
-        $http.get(API_GAME_PATH + '/' + gameName + '/' + serverName)
+        $http.get(API_GAME_PATH + gameName + '/' + serverName + '/')
             .then(function(response){
                 $scope.game = response.data;
             });

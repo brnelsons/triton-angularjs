@@ -4,12 +4,23 @@
 <div th:replace="includes/header :: body"></div>
 
 <body>
-
 <div th:replace="fragment/nav :: body"></div>
-<div class="container">
-    <div style="height:60px;"></div>
-    <h1 th:text="${game.gameName}"></h1>
-    <h1 th:text="${game.serverName}"></h1>
+<div class="container" th:attr="ng-init='getGame(\''+${game.gameName}+'\',\''+${game.serverName}+'\')'">
+    <div th:replace="fragment/alert :: body"></div>
+    <h1>Configure Server <span th:text="${game.gameName}"></span></h1>
+    <div class="well">
+        <form id="update-form" class="form-horizontal" ng-submit="updateGame()">
+            <div th:replace="fragment/form/server-configure-form :: create(config=true)"></div>
+            <div th:replace="fragment/form/add-command :: body"></div>
+            <br>
+            <div class="form-group">
+                <div class="col-sm-2">
+                    <input type="submit" class="btn btn-success" value="Update"/>
+                </div>
+                <div th:replace="fragment/form/add-command :: add"></div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

@@ -85,7 +85,7 @@ public class GameDAO {
         return null;
     }
 
-    public void update(Game game) {
-        saveGame(game, true);
+    public boolean update(Game game) {
+        return saveGame(game, true);
     }
 }
