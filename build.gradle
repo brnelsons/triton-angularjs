@@ -1,6 +1,7 @@
 buildscript {
 	ext {
 		springBootVersion = '1.5.8.RELEASE'
+		angularJsVersion = '1.6.6'
 	}
 	repositories {
 		mavenCentral()
@@ -29,5 +30,6 @@ dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}")
+	compile("org.webjars:angularjs:${angularJsVersion}")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

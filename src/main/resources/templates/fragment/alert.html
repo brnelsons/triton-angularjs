@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" ng-app="app" ng-controller="controller">
+<body th:fragment="body">
+    <div class="alert alert-success show" role="alert" ng-show="alert.type === 'SUCCESS'">
+        <strong ng-bind="alert.strong">Oh snap!</strong> <span ng-bind="alert.text"></span>
+    </div>
+    <div class="alert alert-danger show" role="alert" ng-show="alert.type === 'DANGER'">
+        <strong ng-bind="alert.strong">Oh snap!</strong> <span ng-bind="alert.text"></span>
+    </div>
+</body>
+</html>

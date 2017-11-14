@@ -1,7 +1,7 @@
 var app = angular.module('app', []);
 const API_GAME_PATH = 'http://localhost:8080/api/v1/game/';
 app.controller('controller', function ($scope, $filter, $http, $location) {
-
+    $scope.alert = null;
     $scope.getAllGames = function () {
         $http.get(API_GAME_PATH)
             .then(function (response) {
@@ -23,16 +23,15 @@ app.controller('controller', function ($scope, $filter, $http, $location) {
             gameName: $scope.gameName,
             imageUrl: $scope.imageUrl,
             serverName: $scope.serverName,
-            serverUrl: $scope.serverUrl,
-            commands: $scope.commands
+            serverUrl: $scope.serverUrl
         };
         $http.post(API_GAME_PATH + 'create/', data)
             .then(
                 function () {
-                    $location.path('/')
+                    $scope.alert = {type: 'SUCCESS', strong: "SUCCESS", text: 'Successfully added server!'};
                 },
                 function () {
-                    console.log("ERROR")
+                    $scope.alert = {type: 'DANGER', strong: "ERROR", text: 'Error adding server! Please contact your system admin!'};
                 }
             );
     };
