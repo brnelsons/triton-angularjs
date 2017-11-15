@@ -1,28 +1,25 @@
 package com.bnelson.triton.business;
 
+import com.bnelson.triton.dao.CommandRunner;
 import com.bnelson.triton.dao.GameDAO;
 import com.bnelson.triton.pojo.Game;
 import com.bnelson.triton.pojo.GameCommand;
-import com.bnelson.triton.pojo.GameMetaData;
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class GameBO {
 
     private final GameDAO gameDAO;
+    private final CommandRunner commandRunner;
 
     @Autowired
-    public GameBO(GameDAO gameDAO) {
+    public GameBO(GameDAO gameDAO, CommandRunner commandRunner) {
         this.gameDAO = gameDAO;
+        this.commandRunner = commandRunner;
     }
 
     public boolean createGame(Game game){
@@ -46,5 +43,19 @@ public class GameBO {
 
     public boolean delete(Game game) {
         return gameDAO.delete(game);
+    }
+
+    public List<String> getAllRunningCommands(){
+        return commandRunner.getAllRunningJobs();
+    }
+
+    public boolean runCommand(String gameName, String serverName, String commandName) {
+        Game game = gameDAO.getGameByName(gameName, serverName);
+        for (GameCommand gameCommand : game.getCommands()) {
+            if(commandName.equals(gameCommand.getName())) {
+                return commandRunner.addJob(game, gameCommand);
+            }
+        }
+        return false;
     }
 }

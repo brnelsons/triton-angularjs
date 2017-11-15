@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="input-group">
                         <span class="input-group-btn" ng-repeat="command in game.commands">
-                            <input type="button" class="btn btn-default" ng-value="command.name" style="width:100%;"/>
+                            <input type="button" class="btn btn-default" ng-value="command.name" style="width:100%;" ng-click="runCommand(game, command)"/>
                         </span>
                         <span class="input-group-btn">
                             <input type="button" class="btn btn-default" value="Logs" style="width:100%;"/>

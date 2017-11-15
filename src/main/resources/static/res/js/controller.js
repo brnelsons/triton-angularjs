@@ -64,5 +64,21 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
                     }
                 );
         }
+    };
+
+    $scope.runCommand = function(game, command){
+        $http.post(API_GAME_PATH + game.gameName + '/' + game.serverName + '/runCommand/' + command.name + '/')
+            .then(
+                function (response) {
+                    if(response.data === true) {
+                        $scope.alert = {type: 'SUCCESS', strong: "SUCCESS", text: 'Successfully sent command!'};
+                    }else{
+                        $scope.alert = {type: 'DANGER', strong: "ERROR", text: 'Error tts already running!'};
+                    }
+                },
+                function (response) {
+                    $scope.alert = {type: 'DANGER', strong: "ERROR", text: 'Error sending command!'};
+                }
+            );
     }
 });

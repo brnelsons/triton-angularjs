@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by brnel on 11/3/2017.
  * TODO fill out class documentation
@@ -39,6 +41,18 @@ public class GameService {
     @PostMapping("/delete")
     public ResponseEntity<Boolean> deleteGame(@RequestBody Game game) {
         return ResponseEntity.ok(gameBO.delete(game));
+    }
+
+    @PostMapping("/{gameName}/{serverName}/runCommand/{commandName}/")
+    public ResponseEntity<Boolean> runGameCommand(@PathVariable("gameName") String gameName,
+                                                  @PathVariable("serverName") String serverName,
+                                                  @PathVariable("commandName") String commandName) {
+        return ResponseEntity.ok(gameBO.runCommand(gameName, serverName, commandName));
+    }
+
+    @GetMapping("/jobs/running/")
+    public List<String> getAllRunningCommands(){
+        return gameBO.getAllRunningCommands();
     }
 
     @GetMapping("/{gameName}/{serverName}/")
