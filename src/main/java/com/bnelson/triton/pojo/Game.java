@@ -6,7 +6,8 @@ public class Game {
     private String gameName;
     private String serverName;
     private String imageUrl;
-    private String serverUrl;
+    private String serverLink;
+    private String serverIpAddress;
     private List<GameCommand> commands;
 
     public String getGameName() {
@@ -33,12 +34,21 @@ public class Game {
         this.imageUrl = imageUrl;
     }
 
-    public String getServerUrl() {
-        return serverUrl;
+    public String getServerLink() {
+        return serverLink;
     }
 
-    public void setServerUrl(String serverUrl) {
-        this.serverUrl = serverUrl;
+    public void setServerLink(String serverUrl) {
+        this.serverLink = serverUrl;
+    }
+
+    public String getServerIpAddress() {
+        return serverIpAddress;
+    }
+
+    public Game setServerIpAddress(String serverIpAddress) {
+        this.serverIpAddress = serverIpAddress;
+        return this;
     }
 
     public List<GameCommand> getCommands() {
@@ -59,7 +69,9 @@ public class Game {
         if (gameName != null ? !gameName.equals(game.gameName) : game.gameName != null) return false;
         if (serverName != null ? !serverName.equals(game.serverName) : game.serverName != null) return false;
         if (imageUrl != null ? !imageUrl.equals(game.imageUrl) : game.imageUrl != null) return false;
-        if (serverUrl != null ? !serverUrl.equals(game.serverUrl) : game.serverUrl != null) return false;
+        if (serverLink != null ? !serverLink.equals(game.serverLink) : game.serverLink != null) return false;
+        if (serverIpAddress != null ? !serverIpAddress.equals(game.serverIpAddress) : game.serverIpAddress != null)
+            return false;
         return commands != null ? commands.equals(game.commands) : game.commands == null;
     }
 
@@ -68,7 +80,8 @@ public class Game {
         int result = gameName != null ? gameName.hashCode() : 0;
         result = 31 * result + (serverName != null ? serverName.hashCode() : 0);
         result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
-        result = 31 * result + (serverUrl != null ? serverUrl.hashCode() : 0);
+        result = 31 * result + (serverLink != null ? serverLink.hashCode() : 0);
+        result = 31 * result + (serverIpAddress != null ? serverIpAddress.hashCode() : 0);
         result = 31 * result + (commands != null ? commands.hashCode() : 0);
         return result;
     }

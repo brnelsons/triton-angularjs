@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org" ng-app="app" ng-controller="controller">
+<!--/*@thymesVar id="config" type="String"*/-->
 <body th:fragment="create">
 <div class="form-group">
     <label for="game-name" class="col-sm-2">Game Name</label>
@@ -9,7 +10,7 @@
                placeholder="7 Days to Die"/>
     </div>
     <div class="col-sm-2" th:hidden="${config}">
-        <span ng-if="!gameName" class="invalid-form">*required</span>
+        <span ng-if="!game.gameName" class="invalid-form">*required</span>
     </div>
 
 </div>
@@ -20,7 +21,7 @@
                placeholder="Server ABC"/>
     </div>
     <div class="col-sm-2" th:hidden="${config}">
-        <span ng-if="!serverName" class="invalid-form">*required</span>
+        <span ng-if="!game.serverName" class="invalid-form">*required</span>
     </div>
 </div>
 <div class="form-group">
@@ -31,10 +32,17 @@
     </div>
 </div>
 <div class="form-group">
-    <label for="server-url" class="col-sm-2">Server URL</label>
+    <label for="server-url" class="col-sm-2">Server Link</label>
     <div class="col-sm-8">
-        <input type="text" ng-model="game.serverUrl" class="form-control" id="server-url"
-               placeholder="localhost"/>
+        <input type="text" ng-model="game.serverLink" class="form-control" id="server-url"
+               placeholder="localhost:8081"/>
+    </div>
+</div>
+<div class="form-group">
+    <label for="server-address" class="col-sm-2">Server Address</label>
+    <div class="col-sm-8">
+        <input type="text" ng-model="game.serverIpAddress" class="form-control" id="server-address"
+               placeholder="127.0.0.1 | localhost"/>
     </div>
 </div>
 </body>

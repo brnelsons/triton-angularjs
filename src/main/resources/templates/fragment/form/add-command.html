@@ -2,46 +2,53 @@
 
 <html xmlns:th="http://www.thymeleaf.org" ng-app="app" ng-controller="controller">
 <div th:fragment="body">
-    <h3>Server Commands</h3>
-    <div ng-repeat="command in commands" class="well">
-        <div class="form-group">
-            <label for="command-name" class="col-sm-2">Name</label>
-            <div class="col-sm-8">
-                <input type="text" ng-model="command.name" class="form-control" id="command-name"
-                       placeholder="Start Server"/>
-            </div>
-            <div class="col-sm-2">
-                <span ng-if="!command.name" class="invalid-form">*required</span>
-            </div>
+    <hr>
+    <div class="row">
+        <div class="col-xs-2">
+            <label>Server Commands:</label>
+            <input type="button" id="Add Command" value="Add Command" class="btn btn-info"
+                   ng-click="addCommand()"/>
         </div>
-        <div class="form-group">
-            <label for="command-type" class="col-sm-2">Type</label>
-            <div class="col-sm-8">
-                <input type="text" ng-model="command.type" class="form-control" id="command-type"
-                       placeholder="START,STOP,KILL,CUSTOM"/>
+        <div class="col-xs-10">
+            <div ng-repeat="command in commands" class="well">
+                <div class="form-group">
+                    <label for="command-name" class="col-sm-2">Name</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="command.name" class="form-control" id="command-name"
+                               placeholder="Start Server"/>
+                    </div>
+                    <div class="col-sm-2">
+                        <span ng-if="!command.name" class="invalid-form">*required</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="command-type" class="col-sm-2">Type</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="command-type" ng-model="command.type">
+                            <option>START</option>
+                            <option>STOP</option>
+                            <option>KILL</option>
+                            <option>CUSTOM</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <span ng-if="!command.type" class="invalid-form">*required</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="command-exe" class="col-sm-2">exe</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="command.exe" class="form-control" id="command-exe"
+                               placeholder="/Users/username/.steamcmd/runnable.sh"/>
+                    </div>
+                    <div class="col-sm-2">
+                        <span ng-if="!command.type" class="invalid-form">*required</span>
+                    </div>
+                </div>
+                    <button type="button" class="btn btn-danger" ng-click="removeCommand(command)">
+                        Remove Command
+                    </button>
             </div>
-            <div class="col-sm-2">
-                <span ng-if="!command.type" class="invalid-form">*required</span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="command-exe" class="col-sm-2">exe</label>
-            <div class="col-sm-8">
-                <input type="text" ng-model="command.exe" class="form-control" id="command-exe"
-                       placeholder="/Users/username/.steamcmd/runnable.sh"/>
-            </div>
-            <div class="col-sm-2">
-                <span ng-if="!command.type" class="invalid-form">*required</span>
-            </div>
-        </div>
-        <div class="form-group">
-            <button type="button" class="btn btn-danger" ng-click="removeCommand(command)">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
         </div>
     </div>
-</div>
-<div th:fragment="add" class="col-sm-4">
-    <input type="button" id="Add Command" value="Add Command" class="btn btn-info" ng-click="addCommand()"/>
-</div>
 </html>

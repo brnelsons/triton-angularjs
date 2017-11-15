@@ -43,4 +43,8 @@ public class GameBO {
     public boolean update(Game game) {
         return gameDAO.update(game);
     }
+
+    public boolean delete(Game game) {
+        return gameDAO.delete(game);
+    }
 }

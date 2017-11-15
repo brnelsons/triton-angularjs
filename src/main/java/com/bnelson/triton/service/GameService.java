@@ -30,9 +30,15 @@ public class GameService {
     public ResponseEntity<Boolean> createGame(@RequestBody Game game) {
         return ResponseEntity.ok(gameBO.createGame(game));
     }
+
     @PostMapping("/update")
     public ResponseEntity<Boolean> updateGame(@RequestBody Game game) {
         return ResponseEntity.ok(gameBO.update(game));
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Boolean> deleteGame(@RequestBody Game game) {
+        return ResponseEntity.ok(gameBO.delete(game));
     }
 
     @GetMapping("/{gameName}/{serverName}/")
