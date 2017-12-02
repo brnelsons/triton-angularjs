@@ -13,8 +13,10 @@
             <div th:replace="fragment/form/server-configure-form :: create(config=true)"></div>
             <div th:replace="fragment/form/add-command :: body"></div>
             <br>
-            <input type="submit" class="btn btn-success" value="Update"/>
-            <input type="button" class="btn btn-danger" value="Delete Server" ng-click="deleteServer(game)"/>
+            <div class="form-actions">
+                <input type="submit" class="btn btn-success" value="Update"/>
+                <input type="button" class="btn btn-danger" value="Delete Server" ng-click="deleteServer(game)"/>
+            </div>
         </form>
     </div>
 </div>

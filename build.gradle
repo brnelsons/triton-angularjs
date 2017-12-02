@@ -23,10 +23,11 @@ repositories {
 	mavenCentral()
 }
 dependencies {
-	compile('com.google.guava:guava:23.3-jre')
-	compile('net.sourceforge.nekohtml:nekohtml')
-	compile('com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0')
-	compile('com.fasterxml.jackson.core:jackson-databind:2.8.10')
+	compile("com.google.guava:guava:23.3-jre")
+	compile("net.sourceforge.nekohtml:nekohtml")
+	compile("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.3.0")
+	compile("com.fasterxml.jackson.core:jackson-databind:2.8.10")
+	compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.3.RELEASE")
 	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}")

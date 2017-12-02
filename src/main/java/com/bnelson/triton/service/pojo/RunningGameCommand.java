@@ -1,4 +1,4 @@
-package com.bnelson.triton.pojo;
+package com.bnelson.triton.service.pojo;
 
 import java.util.UUID;
 

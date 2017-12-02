@@ -1,6 +1,6 @@
-package com.bnelson.triton.dao;
+package com.bnelson.triton.domain.data;
 
-import com.bnelson.triton.pojo.Game;
+import com.bnelson.triton.service.pojo.Game;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -21,7 +21,7 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
     };
 
     function pushGame(endpoint) {
-        if($scope.commands !== []){
+        if($scope.commands !== [] || $scope.game.commands === null){
             $scope.game.commands = $scope.commands;
         }
         $http.post(API_GAME_PATH + endpoint +'/', $scope.game)

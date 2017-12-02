@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html ng-app="app" ng-controller="controller" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html ng-app="app" ng-controller="controller" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!--/*@thymesVar id="classActiveHome" type="String"*/-->
 <!--/*@thymesVar id="classActiveCreate" type="String"*/-->
 <!--/*@thymesVar id="classActiveSettings" type="String"*/-->
@@ -19,11 +21,12 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li th:class="${classActiveHome}"><a th:href="@{/}">Home</a></li>
-                    <li th:class="${classActiveCreate}"><a th:href="@{/create}">Create</a></li>
+                    <li th:class="${classActiveHome}"  sec:authorize="isAuthenticated()"><a th:href="@{/}">Home</a></li>
+                    <li th:class="${classActiveCreate}"  sec:authorize="isAuthenticated()"><a th:href="@{/create}">Create</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li th:class="${classActiveSettings}"><a th:href="@{/settings}">Settings</a></li>
+                    <li th:class="${classActiveSettings}"  sec:authorize="isAuthenticated()"><a th:href="@{/settings}">Settings</a></li>
+                    <li><a th:href="@{/logout}" sec:authorize="isAuthenticated()">Log Out</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>

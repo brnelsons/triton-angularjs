@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html ng-app="app" ng-controller="controller" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="includes/header :: body"></div>
+
+<body>
+<div th:replace="fragment/nav :: body"></div>
+<div class="container" th:attr="ng-init='getLog(\''+${game.gameName}+'\',\''+${game.serverName}+'\')'">
+    <div th:replace="fragment/alert :: body"></div>
+    <h1>View Log: <span th:text="${game.gameName}"></span></h1>
+    <div class="well">
+
+    </div>
+</div>
+</body>
+</html>

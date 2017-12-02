@@ -1,4 +1,4 @@
-package com.bnelson.triton.pojo;
+package com.bnelson.triton.service.pojo;
 
 public class GameCommand {
     private String name;

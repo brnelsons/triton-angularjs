@@ -1,63 +1,73 @@
 package com.bnelson.triton.service;
 
-import com.bnelson.triton.business.GameBO;
-import com.bnelson.triton.pojo.Game;
+import com.bnelson.triton.api.model.UniqueCommandRpc;
+import com.bnelson.triton.domain.data.GameDAO;
+import com.bnelson.triton.domain.script.UniqueCommand;
+import com.bnelson.triton.service.pojo.Game;
+import com.bnelson.triton.service.pojo.GameCommand;
+import com.bnelson.triton.domain.script.ScriptJobManager;
+import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-/**
- * Created by brnel on 11/3/2017.
- * TODO fill out class documentation
- */
-@RestController
-@RequestMapping("/api/v1/game")
+@Component
 public class GameService {
 
-    private final GameBO gameBO;
+    private final GameDAO gameDAO;
+    private final ScriptJobManager scriptJobManager;
 
     @Autowired
-    public GameService(GameBO gameBO) {
-        this.gameBO = gameBO;
+    public GameService(GameDAO gameDAO, ScriptJobManager scriptJobManager) {
+        this.gameDAO = gameDAO;
+        this.scriptJobManager = scriptJobManager;
     }
 
-    @GetMapping("/")
-    public Iterable<Game> getAll() {
-        return gameBO.getAllGames();
+    public boolean createGame(Game game){
+        Preconditions.checkNotNull(game);
+        Preconditions.checkNotNull(game.getGameName());
+        Preconditions.checkNotNull(game.getServerName());
+        return gameDAO.createGame(game);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Boolean> createGame(@RequestBody Game game) {
-        return ResponseEntity.ok(gameBO.createGame(game));
+    public List<Game> getAllGames(){
+        return gameDAO.getAllGames();
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<Boolean> updateGame(@RequestBody Game game) {
-        return ResponseEntity.ok(gameBO.update(game));
+    public Game getGame(String gameName, String serverName) {
+        return gameDAO.getGameByName(gameName, serverName);
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<Boolean> deleteGame(@RequestBody Game game) {
-        return ResponseEntity.ok(gameBO.delete(game));
+    public boolean update(Game game) {
+        return gameDAO.update(game);
     }
 
-    @PostMapping("/{gameName}/{serverName}/runCommand/{commandName}/")
-    public ResponseEntity<Boolean> runGameCommand(@PathVariable("gameName") String gameName,
-                                                  @PathVariable("serverName") String serverName,
-                                                  @PathVariable("commandName") String commandName) {
-        return ResponseEntity.ok(gameBO.runCommand(gameName, serverName, commandName));
+    public boolean delete(Game game) {
+        return gameDAO.delete(game);
     }
 
-    @GetMapping("/jobs/running/")
-    public List<String> getAllRunningCommands(){
-        return gameBO.getAllRunningCommands();
+    public Collection<UniqueCommandRpc> getAllRunningCommands(Game game){
+        return scriptJobManager.getAllJobsForGame(game)
+                .stream()
+                .map(uniqueCommand -> new UniqueCommandRpc(
+                        uniqueCommand.getCommandTime(),
+                        uniqueCommand.getCommand(),
+                        uniqueCommand.getOutputDelegate().read()
+                ))
+                .collect(Collectors.toList());
     }
 
-    @GetMapping("/{gameName}/{serverName}/")
-    public Game getGame(@PathVariable("gameName") String gameName,
-                        @PathVariable("serverName") String serverName) {
-        return gameBO.getGame(gameName, serverName);
+    public boolean runCommand(String gameName, String serverName, String commandName) {
+        Game game = gameDAO.getGameByName(gameName, serverName);
+        for (GameCommand gameCommand : game.getCommands()) {
+            if(commandName.equals(gameCommand.getName())) {
+                return scriptJobManager.runScript(game, gameCommand);
+            }
+        }
+        return false;
     }
 }

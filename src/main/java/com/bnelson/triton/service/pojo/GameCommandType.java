@@ -1,4 +1,4 @@
-package com.bnelson.triton.pojo;
+package com.bnelson.triton.service.pojo;
 
 public enum GameCommandType {
     START("Start"),

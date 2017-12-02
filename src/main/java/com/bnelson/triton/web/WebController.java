@@ -1,7 +1,7 @@
-package com.bnelson.triton.controller;
+package com.bnelson.triton.web;
 
-import com.bnelson.triton.business.GameBO;
-import com.bnelson.triton.pojo.Game;
+import com.bnelson.triton.service.GameService;
+import com.bnelson.triton.service.pojo.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class WebController {
-    private final GameBO gameBO;
+    private final GameService gameService;
 
     @Autowired
-    public WebController(GameBO gameBO) {
-        this.gameBO = gameBO;
+    public WebController(GameService gameService) {
+        this.gameService = gameService;
     }
 
     @GetMapping("/")
@@ -53,7 +53,7 @@ public class WebController {
     @GetMapping("/config/{gameName}/{serverName}")
     public ModelAndView configGame(@PathVariable("gameName")String gameName,
                                    @PathVariable("serverName")String serverName){
-        Game gameMetaData = gameBO.getGame(gameName, serverName);
+        Game gameMetaData = gameService.getGame(gameName, serverName);
         ModelAndView modelAndView = new ModelAndView("/config");
         modelAndView.addObject("game", gameMetaData);
         modelAndView.addObject("gameName", gameName);
