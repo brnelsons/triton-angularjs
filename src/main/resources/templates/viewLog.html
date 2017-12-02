@@ -5,11 +5,42 @@
 
 <body>
 <div th:replace="fragment/nav :: body"></div>
-<div class="container" th:attr="ng-init='getLog(\''+${game.gameName}+'\',\''+${game.serverName}+'\')'">
+<div class="container" th:attr="ng-init='getLog(\''+${gameName}+'\',\''+${serverName}+'\')'">
     <div th:replace="fragment/alert :: body"></div>
-    <h1>View Log: <span th:text="${game.gameName}"></span></h1>
-    <div class="well">
-
+    <h1>View Log: <span th:text="${gameName}"></span></h1>
+    <div class="well" ng-repeat="command in resultCommands">
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Time</label>
+            </div>
+            <div class="col-sm-4">
+                <label>{{command.commandTime}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Command Name</label>
+            </div>
+            <div class="col-sm-4">
+                <label>{{command.command.name}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Command Exe</label>
+            </div>
+            <div class="col-sm-4">
+                <label>{{command.command.exe}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Output</label>
+            </div>
+            <div class="col-sm-4">
+                <label>{{command.output}}</label>
+            </div>
+        </div>
     </div>
 </div>
 </body>

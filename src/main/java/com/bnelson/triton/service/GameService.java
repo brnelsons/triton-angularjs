@@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -20,6 +21,7 @@ public class GameService {
 
     private final GameDAO gameDAO;
     private final ScriptJobManager scriptJobManager;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy KK:mm a");
 
     @Autowired
     public GameService(GameDAO gameDAO, ScriptJobManager scriptJobManager) {
@@ -54,7 +56,7 @@ public class GameService {
         return scriptJobManager.getAllJobsForGame(game)
                 .stream()
                 .map(uniqueCommand -> new UniqueCommandRpc(
-                        uniqueCommand.getCommandTime(),
+                        formatter.format(uniqueCommand.getCommandTime().toInstant()),
                         uniqueCommand.getCommand(),
                         uniqueCommand.getOutputDelegate().read()
                 ))

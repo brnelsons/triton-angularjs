@@ -81,4 +81,11 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
                 }
             );
     }
+
+    $scope.getLog = function (gameName, serverName) {
+        $http.get(API_GAME_PATH + gameName + '/' + serverName + '/jobs')
+            .then(function(response){
+                $scope.resultCommands = response.data;
+            });
+    }
 });

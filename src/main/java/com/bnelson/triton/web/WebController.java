@@ -23,39 +23,48 @@ public class WebController {
     }
 
     @GetMapping("/")
-    public String homepage(Model model){
+    public String homepage(Model model) {
         model.addAttribute("title", "Home");
         model.addAttribute("classActiveHome", "active");
         return "index";
     }
 
     @GetMapping("/login")
-    public String login(Model model){
+    public String login(Model model) {
         model.addAttribute("title", "Login");
         model.addAttribute("classActiveLogin", "active");
         return "login";
     }
 
     @GetMapping("/create")
-    public String nav(Model model){
+    public String nav(Model model) {
         model.addAttribute("title", "Create Server");
         model.addAttribute("classActiveCreate", "active");
         return "create";
     }
 
     @GetMapping("/settings")
-    public String settings(Model model){
+    public String settings(Model model) {
         model.addAttribute("title", "Settings");
         model.addAttribute("classActiveSettings", "active");
         return "settings";
     }
 
     @GetMapping("/config/{gameName}/{serverName}")
-    public ModelAndView configGame(@PathVariable("gameName")String gameName,
-                                   @PathVariable("serverName")String serverName){
+    public ModelAndView configGame(@PathVariable("gameName") String gameName,
+                                   @PathVariable("serverName") String serverName) {
         Game gameMetaData = gameService.getGame(gameName, serverName);
         ModelAndView modelAndView = new ModelAndView("/config");
         modelAndView.addObject("game", gameMetaData);
+        modelAndView.addObject("gameName", gameName);
+        modelAndView.addObject("serverName", serverName);
+        return modelAndView;
+    }
+
+    @GetMapping("/log/{gameName}/{serverName}")
+    public ModelAndView viewLog(@PathVariable("gameName") String gameName,
+                                @PathVariable("serverName") String serverName) {
+        ModelAndView modelAndView = new ModelAndView("viewLog");
         modelAndView.addObject("gameName", gameName);
         modelAndView.addObject("serverName", serverName);
         return modelAndView;

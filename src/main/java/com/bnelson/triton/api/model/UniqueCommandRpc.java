@@ -4,14 +4,13 @@ import com.bnelson.triton.service.pojo.GameCommand;
 import com.google.common.base.Objects;
 
 import javax.annotation.Nonnull;
-import java.util.Date;
 
 public class UniqueCommandRpc {
-    private final Date commandTime;
+    private final String commandTime;
     private final GameCommand command;
     private final String output;
 
-    public UniqueCommandRpc(@Nonnull Date commandTime,
+    public UniqueCommandRpc(@Nonnull String commandTime,
                             @Nonnull GameCommand command,
                             @Nonnull String output) {
         this.commandTime = commandTime;
@@ -19,7 +18,7 @@ public class UniqueCommandRpc {
         this.output = output;
     }
 
-    public Date getCommandTime() {
+    public String getCommandTime() {
         return commandTime;
     }
 
