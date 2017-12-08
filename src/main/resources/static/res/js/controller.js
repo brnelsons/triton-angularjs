@@ -13,7 +13,7 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
     $scope.addCommand = function () {
         $scope.commands.push({name: '', type: '', exe: ''})
     };
-    $scope.addCommand();
+    // $scope.addCommand();
 
     $scope.removeCommand = function(cmd){
         var index = $scope.commands.indexOf(cmd);
@@ -21,8 +21,10 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
     };
 
     function pushGame(endpoint) {
-        if($scope.commands !== [] || $scope.game.commands === null){
+        if($scope.commands !== []){
             $scope.game.commands = $scope.commands;
+            console.log($scope.commands);
+            console.log($scope.game.commands);
         }
         $http.post(API_GAME_PATH + endpoint +'/', $scope.game)
             .then(
@@ -80,7 +82,7 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
                     $scope.alert = {type: 'DANGER', strong: "ERROR", text: 'Error sending command!'};
                 }
             );
-    }
+    };
 
     $scope.getLog = function (gameName, serverName) {
         $http.get(API_GAME_PATH + gameName + '/' + serverName + '/jobs')

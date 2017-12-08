@@ -1,7 +1,7 @@
 package com.bnelson.triton.domain.script;
 
-import com.bnelson.triton.service.pojo.Game;
-import com.bnelson.triton.service.pojo.GameCommand;
+import com.bnelson.triton.domain.model.GameModel;
+import com.bnelson.triton.domain.model.GameCommand;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import org.springframework.stereotype.Component;
@@ -11,20 +11,20 @@ import java.util.Date;
 
 @Component
 public class ScriptJobManager {
-    private Multimap<Game, UniqueCommand> gameCommandMap = ArrayListMultimap.create();
+    private Multimap<GameModel, UniqueCommand> gameCommandMap = ArrayListMultimap.create();
 
-    public boolean runScript(Game game, GameCommand gameCommand){
+    public boolean runScript(GameModel gameModel, GameCommand gameCommand){
 
         BatchScriptRunner runner = new BatchScriptRunner(gameCommand.getExe());
         OutputDelegate uniqueCommandOutputD = new OutputDelegate(10);
         uniqueCommandOutputD.addOutput(runner.run());
-        gameCommandMap.put(game, new UniqueCommand(new Date(), gameCommand, uniqueCommandOutputD));
+        gameCommandMap.put(gameModel, new UniqueCommand(new Date(), gameCommand, uniqueCommandOutputD));
 
         return true;
     }
 
-    public Collection<UniqueCommand> getAllJobsForGame(Game game){
-        return gameCommandMap.get(game);
+    public Collection<UniqueCommand> getAllJobsForGame(GameModel gameModel){
+        return gameCommandMap.get(gameModel);
     }
 
 }

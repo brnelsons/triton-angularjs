@@ -1,6 +1,6 @@
 package com.bnelson.triton.domain.script;
 
-import com.bnelson.triton.service.pojo.GameCommand;
+import com.bnelson.triton.domain.model.GameCommand;
 import com.google.common.base.Objects;
 
 import javax.annotation.Nonnull;
