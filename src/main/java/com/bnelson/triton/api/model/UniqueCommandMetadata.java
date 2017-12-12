@@ -1,22 +1,39 @@
 package com.bnelson.triton.api.model;
 
-import com.bnelson.triton.domain.model.GameCommand;
+import com.bnelson.triton.common.model.ComparatorType;
+import com.bnelson.triton.common.model.GameCommand;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
 
 import javax.annotation.Nonnull;
 
 public class UniqueCommandMetadata {
-    @JsonProperty("time") private final String time;
-    @JsonProperty("command") private final GameCommand command;
-    @JsonProperty("output") private final String output;
+    private String time;
+    private GameCommand command;
+    private String output;
+    private ComparatorType resultComparatorType;
+    private String expectedResult;
 
-    public UniqueCommandMetadata(@Nonnull String time,
-                                 @Nonnull GameCommand command,
-                                 @Nonnull String output) {
+    @JsonCreator
+    public UniqueCommandMetadata(@JsonProperty("time") @Nonnull String time,
+                                 @JsonProperty("command") @Nonnull GameCommand command,
+                                 @JsonProperty("output") @Nonnull String output) {
         this.time = time;
         this.command = command;
         this.output = output;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public GameCommand getCommand() {
+        return command;
+    }
+
+    public String getOutput() {
+        return output;
     }
 
     @Override

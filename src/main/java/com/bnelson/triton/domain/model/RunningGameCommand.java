@@ -1,5 +1,7 @@
 package com.bnelson.triton.domain.model;
 
+import com.bnelson.triton.common.model.GameCommand;
+
 import java.util.UUID;
 
 public class RunningGameCommand{

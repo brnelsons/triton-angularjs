@@ -1,7 +1,10 @@
 package com.bnelson.triton.api;
 
 import com.bnelson.triton.api.model.GameMetadata;
+import com.bnelson.triton.api.model.ServerStatus;
 import com.bnelson.triton.api.model.UniqueCommandMetadata;
+import com.bnelson.triton.common.model.GameCommand;
+import com.bnelson.triton.domain.model.GameCommandType;
 import com.bnelson.triton.service.GameService;
 import com.bnelson.triton.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,13 +60,19 @@ public class GameRestController {
 
     @GetMapping("/{gameName}/{serverName}/jobs")
     public Collection<UniqueCommandMetadata> getAllRunningCommands(@PathVariable("gameName") String gameName,
-                                                                   @PathVariable("serverName") String serverName){
+                                                                   @PathVariable("serverName") String serverName) {
         return jobService.getAll(gameService.getOne(gameName, serverName));
     }
 
     @GetMapping("/{gameName}/{serverName}/")
     public GameMetadata getGame(@PathVariable("gameName") String gameName,
-                             @PathVariable("serverName") String serverName) {
+                                @PathVariable("serverName") String serverName) {
         return gameService.getOne(gameName, serverName);
+    }
+
+    @GetMapping("/{gameName}/{serverName}/status")
+    public ResponseEntity<ServerStatus> getServerStatus(@PathVariable("gameName") String gameName,
+                                                        @PathVariable("serverName") String serverName) {
+        return ResponseEntity.ok(jobService.isRunning(gameName, serverName));
     }
 }

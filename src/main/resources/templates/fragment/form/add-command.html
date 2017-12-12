@@ -11,6 +11,8 @@
         </div>
         <div class="col-xs-10">
             <div ng-repeat="command in commands" class="well">
+
+                <!-- COMMAND . NAME -->
                 <div class="form-group">
                     <label for="command-name" class="col-sm-2">Name</label>
                     <div class="col-sm-8">
@@ -21,6 +23,8 @@
                         <span ng-if="!command.name" class="invalid-form">*required</span>
                     </div>
                 </div>
+
+                <!-- COMMAND . TYPE -->
                 <div class="form-group">
                     <label for="command-type" class="col-sm-2">Type</label>
                     <div class="col-sm-8">
@@ -28,6 +32,7 @@
                             <option value="START">START</option>
                             <option value="STOP">STOP</option>
                             <option value="KILL">KILL</option>
+                            <option value="IS_RUNNING">Is Running</option>
                             <option value="CUSTOM">CUSTOM</option>
                         </select>
                     </div>
@@ -35,19 +40,47 @@
                         <span ng-if="!command.type" class="invalid-form">*required</span>
                     </div>
                 </div>
+
+                <!-- COMMAND . EXE -->
                 <div class="form-group">
                     <label for="command-exe" class="col-sm-2">exe</label>
                     <div class="col-sm-8">
-                        <input type="text" ng-model="command.exe" class="form-control" id="command-exe"
-                               placeholder="/Users/username/.steamcmd/runnable.sh"/>
+                        <textarea ng-model="command.exe" class="form-control" id="command-exe"
+                                  placeholder="/Users/username/.steamcmd/runnable.sh"></textarea>
                     </div>
                     <div class="col-sm-2">
-                        <span ng-if="!command.type" class="invalid-form">*required</span>
+                        <span ng-if="!command.exe" class="invalid-form">*required</span>
                     </div>
                 </div>
-                    <button type="button" class="btn btn-danger" ng-click="removeCommand(command)">
-                        Remove Command
-                    </button>
+
+                <!-- Only shows when command type is IS_RUNNING -->
+                <div class="form-group" ng-if="command.type == 'IS_RUNNING'">
+                    <label for="command-result-type" class="col-sm-2">Result Comparator</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" id="command-result-type" ng-model="command.resultComparatorType">
+                            <option value="EQUALS">Equals</option>
+                            <option value="CONTAINS">Contains</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <span ng-if="!command.resultComparatorType" class="invalid-form">*required</span>
+                    </div>
+                </div>
+
+                <!-- Only shows when command type is IS_RUNNING -->
+                <div class="form-group" ng-if="command.type == 'IS_RUNNING'">
+                    <label for="command-result-type" class="col-sm-2">Result Expected</label>
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="command.expectedResult" class="form-control" id="command-expectedResult"
+                               placeholder="&quot;Hello World&quot;"/>
+                    </div>
+                    <div class="col-sm-2">
+                        <span ng-if="!command.expectedResult" class="invalid-form">*required</span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger" ng-click="removeCommand(command)">
+                    Remove Command
+                </button>
             </div>
         </div>
     </div>

@@ -5,43 +5,47 @@
 
 <body>
 <div th:replace="fragment/nav :: body"></div>
-<div class="container" th:attr="ng-init='getLog(\''+${gameName}+'\',\''+${serverName}+'\')'">
+<div class="container">
     <div th:replace="fragment/alert :: body"></div>
     <h1>View Log: <span th:text="${gameName}"></span></h1>
-    <div class="well" ng-repeat="command in resultCommands">
-        <div class="row">
-            <div class="col-sm-4">
-                <label>Time</label>
+    <th:block th:each="job : ${jobs}">
+        <div class="well">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Time</label>
+                </div>
+                <div class="col-sm-8">
+                    <span th:text="${job.time}"></span>
+                </div>
             </div>
-            <div class="col-sm-4">
-                <label>{{command.commandTime}}</label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Command Name</label>
+                </div>
+                <div class="col-sm-8">
+                    <span th:text="${job.command.name}"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Command Exe</label>
+                </div>
+                <div class="col-sm-8">
+                    <span th:text="${job.command.exe}"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <label>Output</label>
+                </div>
+                <div class="col-sm-8">
+                    <label style="width:100%;">
+                        <textarea th:text="${job.output}" readonly style="width:100%"></textarea>
+                    </label>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-4">
-                <label>Command Name</label>
-            </div>
-            <div class="col-sm-4">
-                <label>{{command.command.name}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4">
-                <label>Command Exe</label>
-            </div>
-            <div class="col-sm-4">
-                <label>{{command.command.exe}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4">
-                <label>Output</label>
-            </div>
-            <div class="col-sm-4">
-                <label>{{command.output}}</label>
-            </div>
-        </div>
-    </div>
+    </th:block>
 </div>
 </body>
 </html>

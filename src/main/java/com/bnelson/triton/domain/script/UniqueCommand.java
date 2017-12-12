@@ -1,26 +1,26 @@
 package com.bnelson.triton.domain.script;
 
-import com.bnelson.triton.domain.model.GameCommand;
+import com.bnelson.triton.common.model.GameCommand;
 import com.google.common.base.Objects;
 
 import javax.annotation.Nonnull;
 import java.util.Date;
 
 public class UniqueCommand {
-    private final Date commandTime;
+    private final Date time;
     private final GameCommand command;
     private final OutputDelegate outputDelegate;
 
-    public UniqueCommand(@Nonnull Date commandTime,
+    public UniqueCommand(@Nonnull Date time,
                          @Nonnull GameCommand command,
                          @Nonnull OutputDelegate outputDelegate) {
-        this.commandTime = commandTime;
+        this.time = time;
         this.command = command;
         this.outputDelegate = outputDelegate;
     }
 
-    public Date getCommandTime() {
-        return commandTime;
+    public Date getTime() {
+        return time;
     }
 
     public GameCommand getCommand() {
@@ -36,13 +36,13 @@ public class UniqueCommand {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UniqueCommand that = (UniqueCommand) o;
-        return Objects.equal(commandTime, that.commandTime) &&
+        return Objects.equal(time, that.time) &&
                 Objects.equal(command, that.command) &&
                 Objects.equal(outputDelegate, that.outputDelegate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(commandTime, command, outputDelegate);
+        return Objects.hashCode(time, command, outputDelegate);
     }
 }

@@ -11,7 +11,7 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
     $scope.getAllGames();
     $scope.commands = [];
     $scope.addCommand = function () {
-        $scope.commands.push({name: '', type: '', exe: ''})
+        $scope.commands.push({name: '', type: '', exe: '', resultComparatorType: null, expectedResult: null})
     };
     // $scope.addCommand();
 

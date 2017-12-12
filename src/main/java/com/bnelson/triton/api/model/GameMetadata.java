@@ -1,6 +1,6 @@
 package com.bnelson.triton.api.model;
 
-import com.bnelson.triton.domain.model.GameCommand;
+import com.bnelson.triton.common.model.GameCommand;
 import com.google.common.base.Objects;
 
 import java.util.List;

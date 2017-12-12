@@ -1,8 +1,9 @@
 package com.bnelson.triton.web;
 
 import com.bnelson.triton.api.model.GameMetadata;
+import com.bnelson.triton.service.GameService;
 import com.bnelson.triton.service.GameServiceImpl;
-import com.bnelson.triton.domain.model.GameModel;
+import com.bnelson.triton.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class WebController {
-    private final GameServiceImpl gameServiceImpl;
+    private final GameService gameService;
+    private final JobService jobService;
 
     @Autowired
-    public WebController(GameServiceImpl gameServiceImpl) {
-        this.gameServiceImpl = gameServiceImpl;
+    public WebController(GameService gameService, JobService jobService) {
+        this.gameService = gameService;
+        this.jobService = jobService;
     }
 
     @GetMapping("/")
@@ -54,7 +57,7 @@ public class WebController {
     @GetMapping("/config/{gameName}/{serverName}")
     public ModelAndView configGame(@PathVariable("gameName") String gameName,
                                    @PathVariable("serverName") String serverName) {
-        GameMetadata gameMetadata = gameServiceImpl.getOne(gameName, serverName);
+        GameMetadata gameMetadata = gameService.getOne(gameName, serverName);
         ModelAndView modelAndView = new ModelAndView("/config");
         modelAndView.addObject("game", gameMetadata);
         modelAndView.addObject("gameName", gameName);
@@ -68,6 +71,8 @@ public class WebController {
         ModelAndView modelAndView = new ModelAndView("viewLog");
         modelAndView.addObject("gameName", gameName);
         modelAndView.addObject("serverName", serverName);
+        GameMetadata one = gameService.getOne(gameName, serverName);
+        modelAndView.addObject("jobs", jobService.getAll(one));
         return modelAndView;
     }
 }
