@@ -1,15 +1,19 @@
 package com.bnelson.triton.web;
 
+import com.bnelson.triton.api.model.GameLinkMetadata;
 import com.bnelson.triton.api.model.GameMetadata;
+import com.bnelson.triton.api.model.LinkMetadata;
+import com.bnelson.triton.api.model.UniqueCommandMetadata;
 import com.bnelson.triton.service.GameService;
-import com.bnelson.triton.service.GameServiceImpl;
 import com.bnelson.triton.service.JobService;
+import com.bnelson.triton.web.places.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collection;
 
 /**
  * Created by brnel on 11/3/2017.
@@ -17,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class WebController {
+
     private final GameService gameService;
     private final JobService jobService;
 
@@ -26,53 +31,38 @@ public class WebController {
         this.jobService = jobService;
     }
 
-    @GetMapping("/")
-    public String homepage(Model model) {
-        model.addAttribute("title", "Home");
-        model.addAttribute("classActiveHome", "active");
-        return "index";
+    @GetMapping(LinkMetadata.home)
+    public ModelAndView homepage() {
+        return new HomePlace().getModelAndView();
     }
 
-    @GetMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("title", "Login");
-        model.addAttribute("classActiveLogin", "active");
-        return "login";
+    @GetMapping(LinkMetadata.login)
+    public ModelAndView login() {
+        return new LoginPlace().getModelAndView();
     }
 
-    @GetMapping("/create")
-    public String nav(Model model) {
-        model.addAttribute("title", "Create Server");
-        model.addAttribute("classActiveCreate", "active");
-        return "create";
+    @GetMapping(LinkMetadata.create)
+    public ModelAndView nav() {
+        return new CreatePlace().getModelAndView();
     }
 
-    @GetMapping("/settings")
-    public String settings(Model model) {
-        model.addAttribute("title", "Settings");
-        model.addAttribute("classActiveSettings", "active");
-        return "settings";
+    @GetMapping(LinkMetadata.settings)
+    public ModelAndView settings() {
+        return new SettingsPlace().getModelAndView();
     }
 
-    @GetMapping("/config/{gameName}/{serverName}")
-    public ModelAndView configGame(@PathVariable("gameName") String gameName,
-                                   @PathVariable("serverName") String serverName) {
+    @GetMapping(GameLinkMetadata.CONFIG)
+    public ModelAndView configGame(@PathVariable(GameLinkMetadata.GAME_NAME) String gameName,
+                                   @PathVariable(GameLinkMetadata.SERVER_NAME) String serverName) {
         GameMetadata gameMetadata = gameService.getOne(gameName, serverName);
-        ModelAndView modelAndView = new ModelAndView("/config");
-        modelAndView.addObject("game", gameMetadata);
-        modelAndView.addObject("gameName", gameName);
-        modelAndView.addObject("serverName", serverName);
-        return modelAndView;
+        return new ConfigPlace(gameMetadata).getModelAndView();
     }
 
-    @GetMapping("/log/{gameName}/{serverName}")
-    public ModelAndView viewLog(@PathVariable("gameName") String gameName,
-                                @PathVariable("serverName") String serverName) {
-        ModelAndView modelAndView = new ModelAndView("viewLog");
-        modelAndView.addObject("gameName", gameName);
-        modelAndView.addObject("serverName", serverName);
-        GameMetadata one = gameService.getOne(gameName, serverName);
-        modelAndView.addObject("jobs", jobService.getAll(one));
-        return modelAndView;
+    @GetMapping(GameLinkMetadata.LOG)
+    public ModelAndView viewLog(@PathVariable(GameLinkMetadata.GAME_NAME) String gameName,
+                                @PathVariable(GameLinkMetadata.SERVER_NAME) String serverName) {
+        GameMetadata gameMetadata = gameService.getOne(gameName, serverName);
+        Collection<UniqueCommandMetadata> allJobs = jobService.getAll(gameMetadata);
+        return new LogPlace(gameMetadata, allJobs).getModelAndView();
     }
 }

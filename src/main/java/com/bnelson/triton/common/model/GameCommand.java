@@ -9,6 +9,7 @@ public class GameCommand {
     private String exe;
     private ComparatorType resultComparatorType;
     private String expectedResult;
+    private Boolean shouldShowButton;
 
     public void setName(String name) {
         this.name = name;
@@ -25,6 +26,11 @@ public class GameCommand {
 
     public void setType(GameCommandType type) {
         this.type = type;
+        this.shouldShowButton = type.isShouldShowButton();
+    }
+
+    public boolean isShouldShowButton() {
+        return shouldShowButton;
     }
 
     public String getExe() {

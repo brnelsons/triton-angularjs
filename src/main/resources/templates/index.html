@@ -20,12 +20,12 @@
                 <div class="row">
                     <span ng-bind="game.gameName" class="col-sm-8 game-title"></span>
                     <span class="col-sm-2">
-                        <a class="btn btn-sm btn-warning" href="/config/{{game.gameName}}/{{game.serverName}}">
+                        <a class="btn btn-sm btn-warning" href="/{{game.gameName}}/{{game.serverName}}/config">
                             <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                         </a>
                     </span>
                     <span class="col-sm-2">
-                        <a class="btn btn-sm btn-warning" href="/log/{{game.gameName}}/{{game.serverName}}">
+                        <a class="btn btn-sm btn-warning" href="/{{game.gameName}}/{{game.serverName}}/log">
                             <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
                         </a>
                     </span>
@@ -35,9 +35,15 @@
                     <img ng-src="{{game.imageUrl}}" style="width: 100%;"/>
                 </div>
                 <div class="row">
+                    <label ng-bind="statuses[game.gameName + '/' + game.serverName]" ng-init="getServerStatus(game.gameName, game.serverName)"></label>
+                </div>
+                <div class="row">
                     <div class="input-group">
-                        <span class="input-group-btn" ng-repeat="command in game.commands">
-                            <input type="button" class="btn btn-default" ng-value="command.name" style="width:100%;" ng-click="runCommand(game, command)"/>
+                        <span class="input-group-btn" ng-repeat="command in game.commands" ng-if="command.shouldShowButton">
+                            <input type="button" class="btn btn-default"
+                                   ng-value="command.name"
+                                   style="width:100%;"
+                                   ng-click="runCommand(game, command)"/>
                         </span>
                     </div>
                 </div>
