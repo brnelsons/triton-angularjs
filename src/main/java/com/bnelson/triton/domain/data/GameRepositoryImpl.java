@@ -10,9 +10,9 @@ import java.util.List;
 
 @Repository
 public class GameRepositoryImpl implements GameRepository {
-    private static final String BASE_PATH = "C:/Users/brnel/Documents";//TODO inject this directory
+    private static final String BASE_PATH = "C:/Users/brnel/Documents/triton/configs";//TODO inject this directory
 
-    private final FileRepository<GameModel> fileRepository;
+    private final FileRepository<GameModel, GameModel> fileRepository;
 
     @Autowired
     public GameRepositoryImpl() {
@@ -20,6 +20,12 @@ public class GameRepositoryImpl implements GameRepository {
                 BASE_PATH,
                 new ObjectMapper(new YAMLFactory()),
                 GameModel.class,
+                new FileRepository.FileNameConverter<GameModel, GameModel>() {
+                    @Override
+                    public GameModel convert(GameModel gameModel) {
+                        return gameModel;
+                    }
+                },
                 new FileRepository.FileNameBuilder<GameModel>() {
                     @Override
                     public String Build(GameModel gameModel) {
