@@ -38,7 +38,10 @@ public class GameModelTest {
                         "commands:\n" +
                         "- name: \"Start Server\"\n" +
                         "  type: \"START\"\n" +
-                        "  exe: \"echo \\\"hello world\\\"\"\n",
+                        "  exe: \"echo \\\"hello world\\\"\"\n" +
+                        "  resultComparatorType: null\n" +
+                        "  expectedResult: null\n" +
+                        "  shouldShowButton: true\n",
                 yaml);
     }
 
