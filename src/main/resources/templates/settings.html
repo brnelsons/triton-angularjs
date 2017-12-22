@@ -4,13 +4,53 @@
 <div th:replace="includes/header :: body"></div>
 
 <body>
-
+<!--/*@thymesVar id="allSettings" type="java.lang.String"*/-->
 <div th:replace="fragment/nav :: body"></div>
 <div class="container">
     <div th:replace="fragment/alert :: body"></div>
-    <div style="height:60px;"></div>
-   <h1>Page Under construction</h1>
+    <h1>Settings:</h1>
+    <div class="well" ng-init="getAllSettings()">
+        <h3>Configuration:</h3>
+        <form id="settings-form" class="form-horizontal" ng-submit="submitSettings()">
+            <div class="form-group">
+                <div ng-repeat="setting in allSettings">
+                    <div class="col-sm-6">
+                        <label ng-bind="setting.name"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="setting.value">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-sm-2">
+                    <input type="submit" class="btn btn-success" value="Save"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="well" ng-init="getAllUsers()">
+        <h3>Security:</h3>
+        <form id="users-form" class="form-horizontal" ng-submit="submitUsers()">
+            <div class="form-group">
+                <div ng-repeat="user in allUsers">
+                    <div class="col-sm-6">
+                        <label ng-bind="user.username"></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="password" ng-model="user.password">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="form-group">
+                <div class="col-sm-2">
+                    <input type="submit" class="btn btn-success" value="Save"/>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
-
 </body>
 </html>

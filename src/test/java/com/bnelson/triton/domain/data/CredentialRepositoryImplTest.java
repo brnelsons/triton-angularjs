@@ -23,7 +23,7 @@ public class CredentialRepositoryImplTest {
     @Before
     public void setup() {
         credentialsRepository = new CredentialsRepositoryImpl(baseRepository);
-        when(baseRepository.save(any(), eq(true)))
+        when(baseRepository.update(any()))
                 .thenReturn(true);
     }
 
@@ -32,7 +32,7 @@ public class CredentialRepositoryImplTest {
         Credential cred = new Credential("Admin", "Password", Role.ADMIN);
         credentialsRepository.create(cred);
         verify(baseRepository, times(1)).getOneLike(any());
-        verify(baseRepository, times(1)).save(any(), eq(true));
+        verify(baseRepository, times(1)).update(any());
         verifyNoMoreInteractions(baseRepository);
     }
 

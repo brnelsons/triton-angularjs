@@ -4,6 +4,7 @@ import com.bnelson.triton.api.model.GameLinkMetadata;
 import com.bnelson.triton.api.model.GameMetadata;
 import com.bnelson.triton.api.model.LinkMetadata;
 import com.bnelson.triton.api.model.UniqueCommandMetadata;
+import com.bnelson.triton.domain.data.ConfigRepository;
 import com.bnelson.triton.service.GameService;
 import com.bnelson.triton.service.JobService;
 import com.bnelson.triton.web.places.*;
@@ -24,11 +25,15 @@ public class WebController {
 
     private final GameService gameService;
     private final JobService jobService;
+    private final ConfigRepository configRepository;
 
     @Autowired
-    public WebController(GameService gameService, JobService jobService) {
+    public WebController(GameService gameService,
+                         JobService jobService,
+                         ConfigRepository configRepository) {
         this.gameService = gameService;
         this.jobService = jobService;
+        this.configRepository = configRepository;
     }
 
     @GetMapping(LinkMetadata.home)
@@ -48,7 +53,7 @@ public class WebController {
 
     @GetMapping(LinkMetadata.settings)
     public ModelAndView settings() {
-        return new SettingsPlace().getModelAndView();
+        return new SettingsPlace(configRepository.getAll()).getModelAndView();
     }
 
     @GetMapping(GameLinkMetadata.CONFIG)

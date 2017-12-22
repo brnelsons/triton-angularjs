@@ -4,8 +4,12 @@ import com.bnelson.triton.domain.data.CredentialsRepository;
 import com.bnelson.triton.domain.model.Credential;
 import com.bnelson.triton.domain.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,15 +33,27 @@ public class CredentialsServiceImpl implements CredentialsService {
     }
 
     @Override
-    public Iterable<Credential> getAll(){
-        return credentialsRepository.getAll().values();
+    public List<Credential> getAll(){
+        return credentialsRepository.getAll();
     }
 
     @Override
-    public Iterable<Credential> getAllForRole(Role role){
-        return credentialsRepository.getAll().values()
+    public List<Credential> getAllForRole(Role role){
+        return credentialsRepository.getAll()
                 .stream()
                 .filter(credentials -> role.equals(credentials.getRole()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean saveAll(List<Credential> credentials) {
+        return credentialsRepository.saveAll(credentials);
+    }
+
+    @Override
+    public List<Credential> getByUsername(String name) {
+        return credentialsRepository.getAll().stream()
+                .filter(credential -> name.equals(credential.getUsername()))
                 .collect(Collectors.toList());
     }
 }

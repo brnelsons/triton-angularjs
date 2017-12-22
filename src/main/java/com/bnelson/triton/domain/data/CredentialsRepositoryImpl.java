@@ -1,36 +1,42 @@
 package com.bnelson.triton.domain.data;
 
+import com.bnelson.triton.domain.config.DirectoryConfig;
 import com.bnelson.triton.domain.model.Credential;
 import com.bnelson.triton.domain.model.Role;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Objects;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class CredentialsRepositoryImpl implements CredentialsRepository{
     private static final Logger LOGGER = LoggerFactory.getLogger(CredentialsRepositoryImpl.class);
-    private static final String BASE_PATH = "C:/Users/brnel/Documents/triton/security";//TODO inject this directory
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(new YAMLFactory());
 
     private final FileRepository<CredentialsWrapper, Role> baseRepository;
 
-    public CredentialsRepositoryImpl() {
+    @Autowired
+    public CredentialsRepositoryImpl(@Qualifier(DirectoryConfig.SECURITY_DIR) String securityDir) {
         baseRepository = new FileRepository<>(
-                BASE_PATH,
-                new ObjectMapper(new YAMLFactory()),//todo inject this somehow.
+                securityDir,
+                OBJECT_MAPPER,
                 CredentialsWrapper.class,
                 CredentialsWrapper::getRole,
                 role -> role.name() + "_credentials.yml"
         );
     }
+
     @VisibleForTesting
     CredentialsRepositoryImpl(FileRepository<CredentialsWrapper, Role> testFileRepo) {
         baseRepository = testFileRepo;
@@ -38,9 +44,7 @@ public class CredentialsRepositoryImpl implements CredentialsRepository{
 
     @Override
     public boolean create(Credential credential){
-        CredentialsWrapper credentialsWrapper = new CredentialsWrapper();
-        credentialsWrapper.setRole(credential.getRole());
-        CredentialsWrapper oneLike = baseRepository.getOneLike(credentialsWrapper);
+        CredentialsWrapper oneLike = baseRepository.getOneLike(credential.getRole());
         if(oneLike != null) {
             oneLike.getCredentials().add(credential);
         }else{
@@ -48,7 +52,7 @@ public class CredentialsRepositoryImpl implements CredentialsRepository{
             oneLike.setRole(credential.getRole());
             oneLike.setCredentials(Lists.newArrayList(credential));
         }
-        return baseRepository.save(oneLike, true);
+        return baseRepository.update(oneLike);
     }
 
     @Override
@@ -63,17 +67,15 @@ public class CredentialsRepositoryImpl implements CredentialsRepository{
                 }
             }
         }
-        return updatedWrapper != null && baseRepository.save(updatedWrapper, true);
+        return updatedWrapper != null && baseRepository.update(updatedWrapper);
     }
 
     @Override
     public boolean delete(Credential credential) {
-        CredentialsWrapper credentialsWrapper = new CredentialsWrapper();
-        credentialsWrapper.setRole(credential.getRole());
-        CredentialsWrapper oneLike = baseRepository.getOneLike(credentialsWrapper);
+        CredentialsWrapper oneLike = baseRepository.getOneLike(credential.getRole());
         if(oneLike != null) {
             oneLike.getCredentials().remove(credential);
-            baseRepository.save(oneLike, true);
+            baseRepository.update(oneLike);
             return true;
         }
         LOGGER.warn("Could not find credential to delete credential={}", credential);
@@ -82,14 +84,29 @@ public class CredentialsRepositoryImpl implements CredentialsRepository{
     }
 
     @Override
-    public Multimap<Role, Credential> getAll(){
+    public boolean saveAll(List<Credential> credentials) {
+        boolean success = true;
         Multimap<Role, Credential> map = ArrayListMultimap.create();
-        for (CredentialsWrapper wrapper : baseRepository.getAll()) {
-            for (Credential credential : wrapper.getCredentials()) {
-                map.put(credential.getRole(), credential);
-            }
+        for(Credential credential : credentials){
+            map.put(credential.getRole(), credential);
         }
-        return map;
+        for (Map.Entry<Role, Collection<Credential>> entry : map.asMap().entrySet()) {
+            CredentialsWrapper wrapper = new CredentialsWrapper();
+            wrapper.setRole(entry.getKey());
+            wrapper.setCredentials(Lists.newArrayList(entry.getValue()));
+            success = success && baseRepository.update(wrapper);
+        }
+
+        return success;
+    }
+
+    @Override
+    public List<Credential> getAll(){
+        List<Credential> credentials = new ArrayList<>();
+        for (CredentialsWrapper wrapper : baseRepository.getAll()) {
+            credentials.addAll(wrapper.getCredentials());
+        }
+        return credentials;
     }
 
     @VisibleForTesting

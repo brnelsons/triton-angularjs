@@ -1,15 +1,17 @@
 package com.bnelson.triton.domain.data;
 
 import com.bnelson.triton.domain.model.Credential;
-import com.bnelson.triton.domain.model.Role;
-import com.google.common.collect.Multimap;
 
-public interface CredentialsRepository {
+import java.util.List;
+
+public interface CredentialsRepository extends BasicRepository<Credential> {
+    List<Credential> getAll();
+
     boolean create(Credential credential);
 
     boolean update(Credential credential);
 
     boolean delete(Credential credential);
 
-    Multimap<Role, Credential> getAll();
+    boolean saveAll(List<Credential> credentials);
 }

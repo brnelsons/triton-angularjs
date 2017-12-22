@@ -1,5 +1,6 @@
 var app = angular.module('app', []);
 const API_GAME_PATH = 'http://localhost:8080/api/v1/game/';
+const API_SETTINGS_PATH = 'http://localhost:8080/api/v1/settings/';
 app.controller('controller', function ($scope, $filter, $http, $window) {
     $scope.alert = null;
     $scope.getAllGames = function () {
@@ -13,7 +14,10 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
     $scope.addCommand = function () {
         $scope.commands.push({name: '', type: '', exe: '', resultComparatorType: null, expectedResult: null})
     };
-    // $scope.addCommand();
+
+    $scope.showAlert = function(type, strong, text){
+        $scope.alert = {type: type, strong: strong, text: text};
+    };
 
     $scope.removeCommand = function (cmd) {
         var index = $scope.commands.indexOf(cmd);
@@ -29,14 +33,14 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
         $http.post(API_GAME_PATH + endpoint + '/', $scope.game)
             .then(
                 function () {
-                    $scope.alert = {type: 'SUCCESS', strong: "SUCCESS", text: 'Successfully added/updated server!'};
+                    $scope.showAlert('SUCCESS',
+                        "SUCCESS",
+                        'Successfully added/updated server!')
                 },
-                function () {
-                    $scope.alert = {
-                        type: 'DANGER',
-                        strong: "ERROR",
-                        text: 'Error adding/updating server! Please contact your system admin!'
-                    };
+                function (response) {
+                    $scope.showAlert('DANGER',
+                        "ERROR",
+                        'Error adding/updating server! Please contact your system admin!'  + response.error);
                 }
             );
     }
@@ -63,14 +67,14 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
             $http.post(API_GAME_PATH + 'delete/', $scope.game)
                 .then(
                     function () {
-                        $scope.alert = {type: 'SUCCESS', strong: "SUCCESS", text: 'Successfully deleted server!'};
+                        $scope.showAlert('SUCCESS',
+                            "SUCCESS",
+                            "Successfully deleted server!");
                     },
-                    function () {
-                        $scope.alert = {
-                            type: 'DANGER',
-                            strong: "ERROR",
-                            text: 'Error deleting server! Please contact your system admin!'
-                        };
+                    function (response) {
+                        $scope.showAlert('DANGER',
+                            "ERROR",
+                            "Error deleting server! Please contact your system admin!" + response.error);
                     }
                 );
         }
@@ -81,13 +85,19 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
             .then(
                 function (response) {
                     if (response.data === true) {
-                        $scope.alert = {type: 'SUCCESS', strong: "SUCCESS", text: 'Successfully sent command!'};
+                        $scope.showAlert('SUCCESS',
+                            "SUCCESS",
+                            "Successfully sent command!");
                     } else {
-                        $scope.alert = {type: 'DANGER', strong: "ERROR", text: 'Error tts already running!'};
+                        $scope.showAlert('DANGER',
+                            "ERROR",
+                            "Error its already running!");
                     }
                 },
                 function (response) {
-                    $scope.alert = {type: 'DANGER', strong: "ERROR", text: 'Error sending command!'};
+                    $scope.showAlert('DANGER',
+                        "ERROR",
+                        "Error sending command!" + response.error);
                 }
             );
     };
@@ -106,12 +116,72 @@ app.controller('controller', function ($scope, $filter, $http, $window) {
                 $scope.statuses[gameName + '/' + serverName] = response.data;
             });
     };
-    setInterval(function(){
-        for(var key in $scope.statuses){
-            if($scope.statuses.hasOwnProperty(key)){
+    setInterval(function () {
+        for (var key in $scope.statuses) {
+            if ($scope.statuses.hasOwnProperty(key)) {
                 var keySplit = key.split("/");
                 $scope.getServerStatus(keySplit[0], keySplit[1]);
             }
         }
     }, 10 * 1000);
+
+
+    $scope.getAllSettings = function () {
+        $http.get(API_SETTINGS_PATH + "/config")
+            .then(function (response) {
+                $scope.allSettings = response.data;
+            });
+    };
+
+    $scope.submitSettings = function () {
+        $http.post(API_SETTINGS_PATH + "/config/save", $scope.allSettings)
+            .then(
+                function (response) {
+                    if (response.data === true) {
+                        $scope.showAlert('SUCCESS',
+                            "SUCCESS",
+                            "Successfully saved settings!");
+                    } else {
+                        $scope.showAlert('DANGER',
+                            "ERROR",
+                            "Error saving settings!");
+                    }
+                },
+                function (response) {
+                    $scope.showAlert('DANGER',
+                        "ERROR",
+                        "Error saving settings!" + response.error);
+                }
+            );
+    };
+
+    $scope.getAllUsers = function () {
+        $http.get(API_SETTINGS_PATH + "/users")
+            .then(function (response) {
+                $scope.allUsers = response.data;
+            });
+    };
+
+    $scope.submitUsers = function () {
+        $http.post(API_SETTINGS_PATH + "/users/save", $scope.allUsers)
+            .then(
+                function (response) {
+                    if (response.data === true) {
+                        $scope.showAlert('SUCCESS',
+                            "SUCCESS",
+                            "Successfully saved settings!");
+                    } else {
+                        $scope.showAlert('DANGER',
+                            "ERROR",
+                            "Error saving settings!");
+                    }
+                },
+                function (response) {
+                    $scope.showAlert('DANGER',
+                        "ERROR",
+                        "Error saving settings!" + response.error);
+                }
+            );
+    };
+
 });

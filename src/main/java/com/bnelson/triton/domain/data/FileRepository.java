@@ -12,22 +12,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileRepository<T, F> {
+public class FileRepository<T, K> implements BasicRepository<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileRepository.class);
 
     private final String directory;
     private final File file;
-    private final FileNameConverter<T, F> fileNameConverter;
-    private final FileNameBuilder<F> fileNameBuilder;
+    private final FileNameConverter<T, K> fileNameConverter;
+    private final FileNameBuilder<K> fileNameBuilder;
     private final ObjectMapper objectMapper;
     private final Class<T> tClass;
 
     public FileRepository(String directory,
                           ObjectMapper objectMapper,
                           Class<T> tClass,
-                          FileNameConverter<T, F> fileNameConverter,
-                          FileNameBuilder<F> fileNameBuilder) {
+                          FileNameConverter<T, K> fileNameConverter,
+                          FileNameBuilder<K> fileNameBuilder) {
         this.directory = directory;
         this.file = new File(directory);
         this.objectMapper = objectMapper;
@@ -37,6 +37,7 @@ public class FileRepository<T, F> {
         ensureFolder();
     }
 
+    @Override
     public List<T> getAll() {
         List<T> ts = new ArrayList<>();
         for (String gameName : getAllFiles()) {
@@ -45,7 +46,28 @@ public class FileRepository<T, F> {
         return ts;
     }
 
-    public boolean save(T t, boolean override) {
+    @Override
+    public boolean update(T t) {
+        return save(t, true);
+    }
+
+    @Override
+    public boolean create(T t) {
+        return save(t, false);
+    }
+
+    @Override
+    public boolean delete(T t) {
+        String path = getAbsolutePath(t);
+        File file = new File(path);
+        if (file.exists()) {
+            return file.delete();
+        }
+        LOGGER.error("Could not delete file {}", path);
+        return false;
+    }
+
+    private boolean save(T t, boolean override) {
         String fileName = getAbsolutePath(t);
         if (!override && new File(fileName).exists()) {
             LOGGER.error("File {} already exists!", fileName);
@@ -60,23 +82,13 @@ public class FileRepository<T, F> {
         return false;
     }
 
-    public boolean delete(T t) {
-        String path = getAbsolutePath(t);
-        File file = new File(path);
-        if (file.exists()) {
-            return file.delete();
-        }
-        LOGGER.error("Could not delete file {}", path);
-        return false;
-    }
-
     private String getAbsolutePath(T t) {
         return directory + "/" + fileNameBuilder.Build(fileNameConverter.convert(t));
     }
 
     @Nullable
-    T getOneLike(T t) {
-        return getByFileName(fileNameBuilder.Build(fileNameConverter.convert(t)));
+    T getOneLike(K k) {
+        return getByFileName(fileNameBuilder.Build(k));
     }
 
     @Nullable
@@ -99,9 +111,9 @@ public class FileRepository<T, F> {
         return Lists.newArrayList(list);
     }
 
-    private void ensureFolder(){
-        if(!file.exists()){
-            file.mkdir();
+    private void ensureFolder() {
+        if (!file.exists()) {
+            file.mkdirs();
         }
     }
 

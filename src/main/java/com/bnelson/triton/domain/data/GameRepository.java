@@ -4,7 +4,7 @@ import com.bnelson.triton.domain.model.GameModel;
 
 import java.util.List;
 
-public interface GameRepository {
+public interface GameRepository extends BasicRepository<GameModel>{
     List<GameModel> getAll();
 
     boolean create(GameModel gameModel);
