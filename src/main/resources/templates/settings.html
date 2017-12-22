@@ -14,17 +14,34 @@
         <form id="settings-form" class="form-horizontal" ng-submit="submitSettings()">
             <div class="form-group">
                 <div ng-repeat="setting in allSettings">
-                    <div class="col-sm-6">
-                        <label ng-bind="setting.name"></label>
-                    </div>
-                    <div class="col-sm-6">
-                        <input type="text" ng-model="setting.value">
+                    <div class="row" style="padding-bottom: 10px;">
+                        <div class="col-sm-10 col-md-offset-1">
+                            <div class="input-group">
+                                <span class="input-group-addon" ng-bind="setting.name"></span>
+                                <input type="text" class="form-control" ng-model="setting.value">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-danger" ng-click="removeConfig(setting)">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="form-group">
-                <div class="col-sm-2">
+                <div class="row">
+                    <div class="col-sm-10 col-md-offset-1">
+                        <div class="input-group">
+                            <input id="new-config" type="text" class="form-control" placeholder="config name"
+                                   ng-model="configName">
+                            <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success" ng-click="addConfig(configName);">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
                     <input type="submit" class="btn btn-success" value="Save"/>
                 </div>
             </div>
@@ -35,11 +52,31 @@
         <form id="users-form" class="form-horizontal" ng-submit="submitUsers()">
             <div class="form-group">
                 <div ng-repeat="user in allUsers">
-                    <div class="col-sm-6">
-                        <label ng-bind="user.username"></label>
+                    <div class="row" style="padding-bottom: 10px;">
+                        <div class="col-sm-10 col-md-offset-1">
+                            <div class="input-group">
+                                <span class="input-group-addon" ng-bind="user.username"></span>
+                                <input type="password" class="form-control" ng-model="user.password">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-danger" ng-click="removeUser(user)">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        <input type="password" ng-model="user.password">
+                </div>
+                <div class="row">
+                    <div class="col-sm-10 col-md-offset-1">
+                        <div class="input-group">
+                            <input id="new-user-name" type="text" class="form-control" placeholder="Username"
+                                   ng-model="username">
+                            <span class="input-group-btn">
+                                    <button type="button" class="btn btn-success" ng-click="addUser(username);">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
